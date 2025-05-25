@@ -34,7 +34,9 @@ const NotesCardContainer = ({
             onClick={() => openNote(note)}
             className='flex-1'
           >
-            <h3 className='font-medium truncate text-white'>{note.title}</h3>
+            <h3 className='font-medium truncate text-white'>
+              {note.title == "" ? "New Note" : note.title}
+            </h3>
             <p className='text-gray-400 text-sm truncate'>
               {note.content.split("\n")[0]}
             </p>

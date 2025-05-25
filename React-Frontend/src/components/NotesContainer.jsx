@@ -12,6 +12,8 @@ const NotesContainer = ({
   setActiveNote,
   setNoteTitle,
   setEditMode,
+  createNewNote,
+  Plus,
 }) => {
   return (
     <div className='w-64 bg-gray-800 border-r border-gray-700 flex flex-col'>
@@ -28,6 +30,15 @@ const NotesContainer = ({
         setNoteTitle={setNoteTitle}
         setNotes={setNotes}
       />
+      <div className='p-3 border-t border-gray-700'>
+        <button
+          onClick={createNewNote}
+          className='w-full bg-green-600 hover:bg-green-700 py-2 flex justify-center items-center text-white rounded'
+        >
+          <Plus size={16} />
+          New Note
+        </button>
+      </div>
     </div>
   );
 };
