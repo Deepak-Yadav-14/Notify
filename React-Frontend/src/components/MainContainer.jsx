@@ -1,44 +1,33 @@
-import React, { useState } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import { Plus, Edit2, Save } from "lucide-React";
 import NotesContainer from "./NotesContainer";
+import { addNote, getNotes, updateNote } from "../services/api";
 
 const MainContainer = ({ showNotesContainer }) => {
-  const [notes, setNotes] = useState([
-    {
-      id: 1,
-      title: "Meeting Notes",
-      content:
-        "Discuss project timeline\nReview requirements\nAssign tasks\nSchedule follow-up",
-      tags: ["work", "project"],
-    },
-    {
-      id: 2,
-      title: "Shopping List",
-      content: "Milk\nEggs\nBread\nFruit",
-      tags: ["personal"],
-    },
-    {
-      id: 3,
-      title: "Ideas",
-      content:
-        "Mobile app concept\nWebsite redesign\nNew feature implementation",
-      tags: ["creative"],
-    },
-  ]);
+  const [notes, setNotes] = useState([]);
+
+  useEffect(() => {
+    getNotes().then((data) => setNotes(data));
+  }, []);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [activeNote, setActiveNote] = useState(null);
   const [noteTitle, setNoteTitle] = useState("");
   const [editMode, setEditMode] = useState(false);
 
-  const filteredNotes = notes.filter(
-    (note) =>
-      note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      note.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      note.tags.some((tag) =>
-        tag.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-  );
+  const filteredNotes = notes
+    .filter((note) => note != null && typeof note === "object" && "id" in note)
+    .filter(
+      (note) =>
+        (note.title || "New Note")
+          .toString()
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        (note.content || "")
+          .toString()
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+    );
 
   const openNote = (note) => {
     setActiveNote(note);
@@ -46,20 +35,27 @@ const MainContainer = ({ showNotesContainer }) => {
     setEditMode(false);
   };
 
-  const saveNote = () => {
+  const saveNote = async () => {
     if (!activeNote) return;
-
     const updatedNote = {
       ...activeNote,
-      title: noteTitle,
+      title: noteTitle || "New Note",
       content: activeNote.content,
     };
-
-    setNotes(
-      notes.map((note) => (note.id === activeNote.id ? updatedNote : note))
-    );
-    setEditMode(false);
-    setActiveNote(updatedNote);
+    try {
+      const savedNote = await updateNote(activeNote.id, updatedNote);
+      if (savedNote && "id" in savedNote) {
+        setNotes(
+          notes.map((note) => (note.id === activeNote.id ? savedNote : note))
+        );
+        setActiveNote(savedNote);
+        setEditMode(false);
+      } else {
+        console.error("Update failed:", savedNote);
+      }
+    } catch (error) {
+      console.error("Failed to update note:", error);
+    }
   };
 
   const updateNoteContent = (content) => {
@@ -70,19 +66,21 @@ const MainContainer = ({ showNotesContainer }) => {
     });
   };
 
-  const createNewNote = () => {
-    const newNote = {
-      id: notes.length + 1,
-      title: "",
-      content: "",
-      tag: [],
-    };
-
-    setNotes([...notes, newNote]);
-    openNote(newNote);
-    setEditMode(true);
+  const createNewNote = async () => {
+    const newNote = { title: "New Note", content: "" }; // id assigned by backend
+    try {
+      const savedNote = await addNote(newNote);
+      if (savedNote && "id" in savedNote) {
+        setNotes([...notes, savedNote]);
+        openNote(savedNote);
+        setEditMode(true);
+      } else {
+        console.error("Invalid note returned:", savedNote);
+      }
+    } catch (error) {
+      console.error("Failed to add note:", error);
+    }
   };
-
   return (
     <div className='flex flex-1 overflow-hidden'>
       {showNotesContainer && (

@@ -20,7 +20,20 @@ def add_note(note_data):
   id_counter += 1
   return new_note
 
-def delete_node(note_id: int):
+def update_note(note_id: int, updated_note):
   global notes_db
-  notes_db = [note for note in notes_db if note.id != note_id]
-  return {"message": "Deleted"}
+  for note in notes_db:
+    if note.id == note_id:
+      note.title = updated_note.title
+      note.content = updated_note.content
+      return note
+  return {"error": "Note not found"}
+
+def delete_note(note_id: int):
+    global notes_db
+    initial_length = len(notes_db)
+    notes_db = [note for note in notes_db if note.id != note_id]
+    if len(notes_db) < initial_length:
+        print(notes_db)
+        return {"message": "Deleted"}
+    return {"error": notes_db}

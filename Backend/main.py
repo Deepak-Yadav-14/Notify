@@ -9,7 +9,7 @@ app = FastAPI()
 
 app.add_middleware(
   CORSMiddleware,
-  allow_origins = ["http://127.0.0.1:8000"],
+  allow_origins = ["http://localhost:5173"],
   allow_credentials = True,
   allow_methods = ["*"],
   allow_headers = ["*"]
@@ -35,9 +35,13 @@ def get_notes():
 def create_note(note: NoteModel):
   return notes.add_note(note)
 
+@app.put("/notes/{note_id}")
+def update_note(note_id:int , updated_note: NoteModel):
+  return notes.update_note(note_id, updated_note)
+
 @app.delete("/notes/{note_id}")
-def delete_note(note_id):
-  return notes.delete_node(note_id)
+def delete_note(note_id: int):
+  return notes.delete_note(note_id)
 
 @app.post("/chats")
 def get_chat_response(user_input : User_Input):

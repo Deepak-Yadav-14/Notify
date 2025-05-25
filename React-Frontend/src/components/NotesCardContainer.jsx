@@ -1,4 +1,5 @@
 import React from "react";
+import { deleteNote } from "../services/api";
 
 const NotesCardContainer = ({
   notes,
@@ -15,7 +16,8 @@ const NotesCardContainer = ({
     setEditMode(false);
   };
 
-  const deleteNote = (note_id) => {
+  const deleteNoteCard = async (note_id) => {
+    await deleteNote(note_id);
     setNotes(notes.filter((note) => note.id != note_id));
     if (activeNote && activeNote.id == note_id) {
       setActiveNote(null);
@@ -34,15 +36,13 @@ const NotesCardContainer = ({
             onClick={() => openNote(note)}
             className='flex-1'
           >
-            <h3 className='font-medium truncate text-white'>
-              {note.title == "" ? "New Note" : note.title}
-            </h3>
+            <h3 className='font-medium truncate text-white'>{note.title}</h3>
             <p className='text-gray-400 text-sm truncate'>
-              {note.content.split("\n")[0]}
+              {(note.content || "").split("\n")[0]}
             </p>
           </div>
           <button
-            onClick={() => deleteNote(note.id)}
+            onClick={() => deleteNoteCard(note.id)}
             className='text-gray-400 hover:text-red-500'
           >
             X
