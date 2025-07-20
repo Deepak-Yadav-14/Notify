@@ -3,6 +3,7 @@ from google import genai
 from dotenv import load_dotenv
 from typing import List,Dict
 from pydantic import BaseModel
+from database import notes_collection
 
 load_dotenv()
 client = genai.Client(api_key= os.getenv("GOOGLE_API_KEY"))
@@ -19,14 +20,14 @@ class Chats(BaseModel):
 
 all_chats = Chats()
 
-def chat_with_notes(user_input , notes_db):
+async def chat_with_notes(user_input):
   global all_chats
   notes_text = "Notes: \n"
-  for note in notes_db:
-    notes_text += "id: "+ str(note.id) + " title: "+ note.title + " content: " + note.content + "\n"
+  async for note in notes_collection.find():
+    notes_text += "id: "+ str(note["_id"]) + " title: "+ note["title"] + " content: " + note["content"] + "\n"
 
   # concatenate chats and notes
-  final_input = "User : " + user_input + " System : Use The above query given by User and provide the response using this notes " + notes_text
+  final_input = "User : " + user_input + " System : Use The above query given by User and provide the short response using this notes " + notes_text
   # generate response
   print(final_input)
   user_msg = Message(role = "user", parts = [{ "text" : final_input}])

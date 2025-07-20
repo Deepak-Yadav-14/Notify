@@ -9,7 +9,7 @@ app = FastAPI()
 
 app.add_middleware(
   CORSMiddleware,
-  allow_origins = ["http://localhost:5173"],
+  allow_origins = ["*"],
   allow_credentials = True,
   allow_methods = ["*"],
   allow_headers = ["*"]
@@ -27,22 +27,22 @@ class User_Input(BaseModel):
 
 
 @app.get("/notes")
-def get_notes():
-  return notes.get_all_notes()
+async def get_notes():
+  return await notes.get_all_notes()
 
 
 @app.post("/notes")
-def create_note(note: NoteModel):
-  return notes.add_note(note)
+async def create_note(note: NoteModel):
+  return  await notes.add_note(note.model_dump())
 
 @app.put("/notes/{note_id}")
-def update_note(note_id:int , updated_note: NoteModel):
-  return notes.update_note(note_id, updated_note)
+async def update_note(note_id:str , updated_note: NoteModel):
+  return  await notes.update_note(note_id, updated_note.model_dump())
 
 @app.delete("/notes/{note_id}")
-def delete_note(note_id: int):
-  return notes.delete_note(note_id)
+async def delete_note(note_id: str):
+  return  await notes.delete_note(note_id)
 
 @app.post("/chats")
-def get_chat_response(user_input : User_Input):
-  return chat.chat_with_notes(user_input.chat_input, notes.get_all_notes())
+async def get_chat_response(user_input : User_Input):
+  return await chat.chat_with_notes(user_input.chat_input)
