@@ -30,3 +30,13 @@ export const deleteNote = async (note_id) => {
     method: "DELETE",
   });
 };
+
+export const getChatResponse = async (chatInput) => {
+  const res = await fetch(`${Base_URL}/chats`, {
+    method: "Post",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(chatInput),
+  });
+
+  return res.json();
+};

@@ -2,8 +2,20 @@ import React, { useMemo, useEffect, useState } from "react";
 import { Plus, Edit2, Save } from "lucide-React";
 import NotesContainer from "./NotesContainer";
 import { addNote, getNotes, updateNote } from "../services/api";
+import ChatBotContainer from "./ChatBotContainer";
 
-const MainContainer = ({ showNotesContainer }) => {
+const MainContainer = ({ showNotesContainer, showChatBotContainer }) => {
+  const [chatInput, setChatInput] = useState("");
+  const [chatMessages, setChatMessages] = useState(() => {
+    const saved = localStorage.getItem("chat_messages");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("chat_messages", JSON.stringify(chatMessages));
+  }, [chatMessages]);
+  const [loading, setLoading] = useState(false);
+
   const [notes, setNotes] = useState([]);
 
   useEffect(() => {
@@ -82,7 +94,7 @@ const MainContainer = ({ showNotesContainer }) => {
     }
   };
   return (
-    <div className='flex flex-1 overflow-hidden'>
+    <div className="flex flex-1 overflow-hidden">
       {showNotesContainer && (
         <NotesContainer
           notes={notes}
@@ -99,75 +111,80 @@ const MainContainer = ({ showNotesContainer }) => {
         />
       )}
 
-      <div className='flex-1 flex flex-col bg-gray-900'>
+      <div className="flex-1 flex flex-col bg-gray-900">
         {activeNote ? (
           <>
-            <div className='p-4 border-b border-gray-700 flex justify-between items-center bg-gray-800'>
+            <div className="p-4 border-b border-gray-700 flex justify-between items-center bg-gray-800">
               {editMode ? (
                 <input
-                  type='text'
+                  type="text"
                   value={noteTitle}
-                  placeholder='New Note'
+                  placeholder="New Note"
                   onChange={(e) => setNoteTitle(e.target.value)}
-                  className='text-white flex-1 bg-gray-700  p-2 rounded'
+                  className="text-white flex-1 bg-gray-700  p-2 rounded"
                 />
               ) : (
-                <h1 className='text-white text-xl font-semibold'>
+                <h1 className="text-white text-xl font-semibold">
                   {activeNote.title}
                 </h1>
               )}
-              <div className='flex space-x-2'>
+              <div className="flex space-x-2">
                 {editMode ? (
                   <button
                     onClick={saveNote}
-                    className='bg-green-600 hover:bg-green-700 rounded text-white p-2.5 ml-2'
-                  >
+                    className="bg-green-600 hover:bg-green-700 rounded text-white p-2.5 ml-2">
                     <Save size={20} />
                   </button>
                 ) : (
                   <button
                     onClick={() => setEditMode(true)}
-                    className='bg-blue-600 hover:bg-blue-700 rounded p-2.5 text-white ml-2'
-                  >
+                    className="bg-blue-600 hover:bg-blue-700 rounded p-2.5 text-white ml-2">
                     <Edit2 size={20} />
                   </button>
                 )}
               </div>
             </div>
-            <div className='flex-1 p-4 overflow-y-auto'>
+            <div className="flex-1 p-4 overflow-y-auto">
               {editMode ? (
                 <textarea
                   value={activeNote.content}
                   onChange={(e) => updateNoteContent(e.target.value)}
-                  className='text-white h-full w-full bg-gray-800 resize-none p-4 rounded'
+                  className="text-white h-full w-full bg-gray-800 resize-none p-4 rounded"
                 />
               ) : (
-                <div className='whitespace-pre-wrap text-white bg-gray-800 p-4 rounded h-full overflow-y-auto'>
+                <div className="whitespace-pre-wrap text-white bg-gray-800 p-4 rounded h-full overflow-y-auto">
                   {activeNote.content}
                 </div>
               )}
             </div>
           </>
         ) : (
-          <div className='flex-1 flex justify-center items-center'>
-            <div className='text-center'>
-              <p className='text-gray-500 mb-4'>
+          <div className="flex-1 flex justify-center items-center">
+            <div className="text-center">
+              <p className="text-gray-500 mb-4">
                 Select a Note or create a new one
               </p>
               <button
                 onClick={createNewNote}
-                className='bg-green-600 text-white py-2 px-4 rounded flex items-center mx-auto '
-              >
-                <Plus
-                  size={16}
-                  className='mr-2'
-                />
+                className="bg-green-600 text-white py-2 px-4 rounded flex items-center mx-auto ">
+                <Plus size={16} className="mr-2" />
                 New Note
               </button>
             </div>
           </div>
         )}
       </div>
+
+      {showChatBotContainer && (
+        <ChatBotContainer
+          chatInput={chatInput}
+          setChatInput={setChatInput}
+          chatMessages={chatMessages}
+          setChatMessages={setChatMessages}
+          loading={loading}
+          setLoading={setLoading}
+        />
+      )}
     </div>
   );
 };
