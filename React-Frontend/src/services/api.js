@@ -1,5 +1,10 @@
 const Base_URL = "http://127.0.0.1:8000";
 
+export const getNote = async (noteId) => {
+  const res = await fetch(`${Base_URL}/notes/${noteId}`);
+  return res.json();
+};
+
 export const getNotes = async () => {
   const res = await fetch(`${Base_URL}/notes`);
   return res.json();

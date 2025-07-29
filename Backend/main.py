@@ -26,6 +26,10 @@ class User_Input(BaseModel):
   chat_input: str
 
 
+@app.get("/notes/{note_id}")
+async def get_note( note_id : str):
+  return await notes.get_note(note_id)
+
 @app.get("/notes")
 async def get_notes():
   return await notes.get_all_notes()

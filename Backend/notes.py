@@ -12,6 +12,13 @@ class Note(BaseModel):
 # id_counter = 1
 
 
+async def get_note(note_id):
+  note = await notes_collection.find_one({"_id" : ObjectId(note_id)});
+  note["id"] = str(note["_id"])
+  del note["_id"]
+  return note
+
+
 async def get_all_notes():
   notes = []
   async for note in notes_collection.find():
