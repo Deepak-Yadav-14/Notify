@@ -1,15 +1,23 @@
 from passlib.context import CryptContext
+from dotenv import load_dotenv
+from pydantic import EmailStr
+from Backend.schemas import TokenData
+from database import user_collection
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+from datetime import datetime, timedelta, timezone
 from jose import jwt,JWTError
 import os
-from dotenv import load_dotenv
-from datetime import timedelta, datetime, timezone
 
 load_dotenv()
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
 
-pwd_context = CryptContext(schemes = ["bcrypt"], deprecated = "auto")
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated = "auto")
 
 def hash_password(password):
   return pwd_context.hash(password)
@@ -17,14 +25,44 @@ def hash_password(password):
 def verify_password(plain_password, hashed_password):
   return pwd_context.verify(plain_password, hashed_password)
 
-def create_Access_Token(data: dict , expires_delta = timedelta(hours = 1)):
-  to_encode = data.copy()
-  to_encode.update({"exp" : datetime.now(timezone.utc) + expires_delta})
-  return jwt.encode(to_encode, SECRET_KEY, algorithm = ALGORITHM)
 
-def decode_token(token : str):
+async def register_user(user):
+  if await user_collection.find_one({"email": user.email}):
+    raise HTTPException(status_code=400, detail="Email already registered")
+  hashed_pw = hash_password(user.password)
+  user_dict = {"username": user.username , "email": user.email, "hashed_password":hashed_pw }
+  await user_collection.insert_one(user_dict)
+  return {"msg" : "User registered successfully"}
+
+async def authenticate_user(email : EmailStr, password: str):
+  user = await user_collection.find_one({"email": email})
+  if not user or not verify_password(password, user.password):
+    return False
+  return user
+  
+async def create_access_token(data: dict , expire_time : timedelta | None = None):
+  to_encode = data.copy()
+  to_encode.update({"exp": timedelta.now(timezone.utc) + (expire_time or timedelta(minutes=30))})
+  return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+
+async def get_curr_user(token: str = Depends(oauth2_scheme)):
+  credentials_exception = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="Could not validate credentials",
+    headers={"WWW-Authenticate": "Bearer"},
+  )
   try:
-    payload = jwt.decode(token , SECRET_KEY, ALGORITHM)
-    return payload
+    payload = jwt.decode(token, SECRET_KEY, ALGORITHM)
+    email = payload.get("sub")
+    if not email:
+      raise credentials_exception
+    token_data = TokenData(email = email)
   except JWTError:
-    return None
+    raise credentials_exception
+  user = user_collection.find_one({"email": token_data.email})
+  if user is None:
+    raise credentials_exception
+  return user
+
+
