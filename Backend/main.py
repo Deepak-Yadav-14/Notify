@@ -82,13 +82,3 @@ async def login(form_data : OAuth2PasswordRequestForm = Depends()):
   return {"access_token": access_token, "token_type": "bearer"}
 
 
-<<<<<<< Updated upstream
-@app.get("/protected")
-def protected_route(Authorization : str = Header(...)):
-  token = Authorization.split(" ")[1]
-  payload = decode_token(token)
-  if not payload:
-    raise HTTPException(status_code=401, detail="Invalid token")
-  return {"msg" : "Access granted", "user": payload}
-=======
->>>>>>> Stashed changes
