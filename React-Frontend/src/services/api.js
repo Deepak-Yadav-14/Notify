@@ -1,19 +1,26 @@
 const Base_URL = "http://127.0.0.1:8000";
 
 export const getNote = async (noteId) => {
-  const res = await fetch(`${Base_URL}/notes/${noteId}`);
+  const res = await fetch(`${Base_URL}/notes/${noteId}`, {
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+  });
   return res.json();
 };
 
 export const getNotes = async () => {
-  const res = await fetch(`${Base_URL}/notes`);
+  const res = await fetch(`${Base_URL}/notes`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  });
   return res.json();
 };
 
 export const addNote = async (note) => {
   const res = await fetch(`${Base_URL}/notes`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
     body: JSON.stringify(note),
   });
 
@@ -23,7 +30,10 @@ export const addNote = async (note) => {
 export const updateNote = async (noteId, updatedNote) => {
   const res = await fetch(`${Base_URL}/notes/${noteId}`, {
     method: "PUT",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
     body: JSON.stringify(updatedNote),
   });
 
@@ -39,7 +49,10 @@ export const deleteNote = async (note_id) => {
 export const getChatResponse = async (chatInput) => {
   const res = await fetch(`${Base_URL}/chats`, {
     method: "Post",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
     body: JSON.stringify(chatInput),
   });
 
