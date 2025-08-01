@@ -1,5 +1,5 @@
-import React, { useMemo, useEffect, useState } from "react";
-import { Plus, Edit2, Save } from "lucide-React";
+import { useEffect, useState } from "react";
+import { Plus, Edit2, Save } from "lucide-react";
 import NotesContainer from "./NotesContainer";
 import { addNote, getNotes, updateNote } from "../services/api";
 import ChatBotContainer from "./ChatBotContainer";

@@ -35,28 +35,28 @@ class User_Input(BaseModel):
 
 @app.get("/notes/{note_id}")
 async def get_note( note_id : str, curr_user: Annotated[dict, Depends(get_curr_user)]):
-  return await notes.get_note(note_id)
+  return await notes.get_note(note_id, curr_user)
 
 @app.get("/notes")
 async def get_notes(curr_user: Annotated[dict, Depends(get_curr_user)]):
-  return await notes.get_all_notes()
+  return await notes.get_all_notes(curr_user)
 
 
 @app.post("/notes")
 async def create_note(note: NoteModel, curr_user: Annotated[dict, Depends(get_curr_user)]):
-  return  await notes.add_note(note.model_dump())
+  return  await notes.add_note(note.model_dump(), curr_user)
 
 @app.put("/notes/{note_id}")
 async def update_note(note_id:str , updated_note: NoteModel ,curr_user: Annotated[dict, Depends(get_curr_user)]):
-  return  await notes.update_note(note_id, updated_note.model_dump())
+  return await notes.update_note(note_id, updated_note.model_dump(), curr_user)
 
 @app.delete("/notes/{note_id}")
 async def delete_note(note_id: str, curr_user: Annotated[dict, Depends(get_curr_user)]):
-  return  await notes.delete_note(note_id)
+  return await notes.delete_note(note_id, curr_user)
 
 @app.post("/chats")
 async def get_chat_response(user_input : User_Input, curr_user: Annotated[dict, Depends(get_curr_user)]):
-  return await chat.chat_with_notes(user_input.chat_input)
+  return await chat.chat_with_notes(user_input.chat_input, curr_user)
 
 
 

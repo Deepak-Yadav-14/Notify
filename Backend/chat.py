@@ -20,10 +20,10 @@ class Chats(BaseModel):
 
 all_chats = Chats()
 
-async def chat_with_notes(user_input):
+async def chat_with_notes(user_input, curr_user):
   global all_chats
   notes_text = "Notes: \n"
-  async for note in notes_collection.find():
+  async for note in notes_collection.find({"email": curr_user["email"]}):
     notes_text += "id: "+ str(note["_id"]) + " title: "+ note["title"] + " content: " + note["content"] + "\n"
 
   # concatenate chats and notes

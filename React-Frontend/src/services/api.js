@@ -43,6 +43,9 @@ export const updateNote = async (noteId, updatedNote) => {
 export const deleteNote = async (note_id) => {
   await fetch(`${Base_URL}/notes/${note_id}`, {
     method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
   });
 };
 

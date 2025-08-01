@@ -53,7 +53,7 @@ async def get_curr_user(token: str = Depends(oauth2_scheme)):
     headers={"WWW-Authenticate": "Bearer"},
   )
   try:
-    payload = jwt.decode(token, SECRET_KEY, ALGORITHM)
+    payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
     email = payload.get("sub")
     if not email:
       raise credentials_exception
