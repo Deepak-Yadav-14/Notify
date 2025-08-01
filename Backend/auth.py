@@ -1,7 +1,7 @@
 from passlib.context import CryptContext
 from dotenv import load_dotenv
 from pydantic import EmailStr
-from Backend.schemas import TokenData
+from schemas import TokenData
 from database import user_collection
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
@@ -35,14 +35,14 @@ async def register_user(user):
   return {"msg" : "User registered successfully"}
 
 async def authenticate_user(email : EmailStr, password: str):
-  user = await user_collection.find_one({"email": email})
-  if not user or not verify_password(password, user.password):
+  user_dict = await user_collection.find_one({"email": email})
+  if not user_dict or not verify_password(password, user_dict["hashed_password"]):
     return False
-  return user
+  return user_dict
   
-async def create_access_token(data: dict , expire_time : timedelta | None = None):
+def create_access_token(data: dict , expire_time : timedelta | None = None):
   to_encode = data.copy()
-  to_encode.update({"exp": timedelta.now(timezone.utc) + (expire_time or timedelta(minutes=30))})
+  to_encode.update({"exp": datetime.now(timezone.utc) + (expire_time or timedelta(minutes=30))})
   return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 
@@ -60,7 +60,7 @@ async def get_curr_user(token: str = Depends(oauth2_scheme)):
     token_data = TokenData(email = email)
   except JWTError:
     raise credentials_exception
-  user = user_collection.find_one({"email": token_data.email})
+  user = await user_collection.find_one({"email": token_data.email})
   if user is None:
     raise credentials_exception
   return user

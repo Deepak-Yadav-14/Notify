@@ -66,11 +66,12 @@ async def get_chat_response(user_input : User_Input, curr_user: Annotated[dict, 
 
 @app.post("/register")
 async def register(user: UserCreate ):
-  return register_user(user)
+  return await register_user(user)
   
 @app.post("/login",response_model=Token)
 async def login(form_data : OAuth2PasswordRequestForm = Depends()):
-  user = authenticate_user(form_data.email , form_data.password)
+  user_email = form_data.username # treating email as unique identity
+  user = await authenticate_user(user_email , form_data.password)
 
   if not user:
     raise HTTPException(
@@ -78,7 +79,7 @@ async def login(form_data : OAuth2PasswordRequestForm = Depends()):
       detail="Invalid Credentials",
       headers={"WWW-AUTHENTICATE": "Bearer"}
     )
-  access_token = create_access_token({"sub": user.email})
+  access_token = create_access_token({"sub": user["email"]})
   return {"access_token": access_token, "token_type": "bearer"}
 
 
