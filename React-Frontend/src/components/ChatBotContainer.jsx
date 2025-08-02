@@ -1,5 +1,5 @@
-import React, { use, useEffect, useState } from "react";
-import { getChatResponse } from "../services/api";
+import { React, use, useEffect, useState } from "react";
+import { resetChats, getChatResponse } from "../services/api";
 
 const ChatBotContainer = ({
   chatInput,
@@ -26,12 +26,27 @@ const ChatBotContainer = ({
     }
   };
 
+  const handleResetChats = async () => {
+    try {
+      const response = await resetChats();
+      setChatMessages([]);
+    } catch (error) {
+      console.error("Failed to reset chats:", error);
+      alert("Failed to reset chat history");
+    }
+  };
+
   return (
     <div className="max-w-80 bg-gray-800 border-gray-700 border-l flex flex-col">
       <div className="m-2">
         <h1 className="bg-gray-700 text-gray-100 text-center border-b border-gray-700 p-2 text-lg rounded">
           Ask Notify for Notes
         </h1>
+        <button
+          onClick={handleResetChats}
+          className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 mt-2 rounded w-full">
+          Reset Chats
+        </button>
       </div>
       <div className="flex flex-col flex-1 overflow-y-auto bg-gray-900 rounded p-4 space-y-2">
         {chatMessages.map((msg, idx) => (

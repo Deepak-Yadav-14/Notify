@@ -8,3 +8,5 @@ db = client.get_database("notes_db")
 notes_collection = db.get_collection("notes")
 
 user_collection = db.get_collection("users")
+
+chat_collection = db.get_collection("chats")

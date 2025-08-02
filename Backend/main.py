@@ -21,8 +21,6 @@ app.add_middleware(
   allow_headers = ["*"]
 )
 
-
-
 class NoteModel(BaseModel):
   title: str
   content: str
@@ -31,7 +29,7 @@ class NoteModel(BaseModel):
 class User_Input(BaseModel):
   chat_input: str
 
-
+# Notes endpoints
 
 @app.get("/notes/{note_id}")
 async def get_note( note_id : str, curr_user: Annotated[dict, Depends(get_curr_user)]):
@@ -54,11 +52,21 @@ async def update_note(note_id:str , updated_note: NoteModel ,curr_user: Annotate
 async def delete_note(note_id: str, curr_user: Annotated[dict, Depends(get_curr_user)]):
   return await notes.delete_note(note_id, curr_user)
 
+
+
+# ChatBot endpoints
+
+@app.get("/chats")
+async def get_chats(curr_user: Annotated[dict, Depends(get_curr_user)]):
+  return await chat.get_all_chats(curr_user)
+
 @app.post("/chats")
 async def get_chat_response(user_input : User_Input, curr_user: Annotated[dict, Depends(get_curr_user)]):
   return await chat.chat_with_notes(user_input.chat_input, curr_user)
 
-
+@app.delete("/chats/reset")
+async def reset_chats(curr_user: Annotated[dict, Depends(get_curr_user)]):
+  return await chat.reset_chats(curr_user)
 
 
 

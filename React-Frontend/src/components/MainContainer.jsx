@@ -1,20 +1,32 @@
 import { useEffect, useState } from "react";
 import { Plus, Edit2, Save } from "lucide-react";
 import NotesContainer from "./NotesContainer";
-import { addNote, getNotes, updateNote } from "../services/api";
+import { addNote, getAllChats, getNotes, updateNote } from "../services/api";
 import ChatBotContainer from "./ChatBotContainer";
 
 const MainContainer = ({ showNotesContainer, showChatBotContainer }) => {
   const [chatInput, setChatInput] = useState("");
-  const [chatMessages, setChatMessages] = useState(() => {
-    const saved = localStorage.getItem("chat_messages");
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [chatMessages, setChatMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem("chat_messages", JSON.stringify(chatMessages));
-  }, [chatMessages]);
-  const [loading, setLoading] = useState(false);
+    const fetchChats = async () => {
+      setLoading(true);
+      try {
+        const chats = await getAllChats();
+        const formattedChats = chats.map((chat) => ({
+          role: chat.role,
+          text: chat.parts[0].text,
+        }));
+        setChatMessages(formattedChats);
+      } catch (error) {
+        console.log("Failed to fetch chats: ", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchChats();
+  }, []);
 
   const [notes, setNotes] = useState([]);
 
