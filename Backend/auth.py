@@ -66,3 +66,9 @@ async def get_curr_user(token: str = Depends(oauth2_scheme)):
   return user
 
 
+async def update_username(username: str, email: str):
+  try:
+    res = await user_collection.update_one({"email": email}, {"$set": {"username": username}})
+  except Exception as e:
+    raise HTTPException(status_code=500, detail=str(e))
+  return {"msg": "Username updated successfully"}

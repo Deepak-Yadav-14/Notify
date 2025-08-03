@@ -4,19 +4,17 @@ import { useNavigate, Link } from "react-router-dom";
 
 const LoginPage = () => {
   const [form, setForm] = useState({ username: "", password: "" });
-  const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
     if (token) {
-      localStorage.setItem("token", token);
-    } else {
-      localStorage.removeItem("token");
+      navigate("/dashboard");
     }
-  }, [token]);
+  }, [navigate]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -39,7 +37,7 @@ const LoginPage = () => {
 
       const data = await res.json();
       if (res.ok) {
-        setToken(data.access_token);
+        localStorage.setItem("token", data.access_token);
         localStorage.setItem("username", data.username);
         localStorage.setItem("email", data.email);
         navigate("/dashboard");
@@ -57,9 +55,9 @@ const LoginPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-gray-950 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-900 rounded-full opacity-8 animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-emerald-900 rounded-full opacity-8 animate-pulse delay-1000"></div>
-        <div className="absolute top-3/4 left-1/2 w-64 h-64 bg-teal-900 rounded-full opacity-8 animate-pulse delay-500"></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-900 rounded-full opacity-20 animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-emerald-900 rounded-full opacity-20 animate-pulse delay-1000"></div>
+        <div className="absolute top-3/4 left-1/2 w-64 h-64 bg-teal-900 rounded-full opacity-20 animate-pulse delay-500"></div>
       </div>
 
       {/* Main login container */}
@@ -127,7 +125,7 @@ const LoginPage = () => {
               disabled={isLoading}
               className="w-full bg-gradient-to-r from-blue-700 to-teal-700 hover:from-blue-600 hover:to-teal-600 text-gray-100 font-semibold py-4 px-6 rounded-2xl shadow-lg hover:shadow-blue-900/30 transition-all duration-300 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed group">
               {isLoading ? (
-                <div className="w-6 h-6 border-2 border-gray-400/30 border-t-gray-100 rounded-full animate-spin"></div>
+                <div className="w-6 h-6 border-2 border-gray-400/30 border-t-gray-100 rounded-full animate or-spin"></div>
               ) : (
                 <>
                   <span>Sign In</span>

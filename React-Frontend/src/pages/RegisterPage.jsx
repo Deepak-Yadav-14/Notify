@@ -1,5 +1,13 @@
-import { useState } from "react";
-import { Eye, EyeOff, User, Lock, ArrowRight, UserPlus } from "lucide-react";
+import { useState, useEffect } from "react";
+import {
+  Eye,
+  EyeOff,
+  User,
+  Lock,
+  ArrowRight,
+  UserPlus,
+  Mail,
+} from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 
 const RegisterPage = () => {
@@ -9,6 +17,13 @@ const RegisterPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, [navigate]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -28,13 +43,18 @@ const RegisterPage = () => {
       });
 
       const data = await res.json();
-      setMsg(data.msg || data.detail);
-
       if (res.ok) {
         setIsSuccess(true);
-        navigate("/login");
+        setMsg(data.msg || "Registration successful");
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
+      } else {
+        setIsSuccess(false);
+        setMsg(data.detail || "Registration failed");
       }
     } catch (err) {
+      setIsSuccess(false);
       setMsg("Network error. Please check your connection.");
     } finally {
       setIsLoading(false);
@@ -45,9 +65,9 @@ const RegisterPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-gray-950 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-900 rounded-full opacity-8 animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-emerald-900 rounded-full opacity-8 animate-pulse delay-1000"></div>
-        <div className="absolute top-3/4 left-1/2 w-64 h-64 bg-teal-900 rounded-full opacity-8 animate-pulse delay-500"></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-900 rounded-full opacity-20 animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-emerald-900 rounded-full opacity-20 animate-pulse delay-1000"></div>
+        <div className="absolute top-3/4 left-1/2 w-64 h-64 bg-teal-900 rounded-full opacity-20 animate-pulse delay-500"></div>
       </div>
 
       {/* Main registration container */}
@@ -86,7 +106,7 @@ const RegisterPage = () => {
             {/* Email Input */}
             <div className="relative group">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <User className="h-5 w-5 text-gray-500 group-focus-within:text-emerald-400 transition-colors" />
+                <Mail className="h-5 w-5 text-gray-500 group-focus-within:text-emerald-400 transition-colors" />
               </div>
               <input
                 name="email"
@@ -128,7 +148,6 @@ const RegisterPage = () => {
             {/* Register Button */}
             <button
               type="submit"
-              onClick={handleSubmit}
               disabled={isLoading}
               className="w-full bg-gradient-to-r from-emerald-700 to-blue-700 hover:from-emerald-600 hover:to-blue-600 text-gray-100 font-semibold py-4 px-6 rounded-2xl shadow-lg hover:shadow-emerald-900/30 transition-all duration-300 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed group">
               {isLoading ? (

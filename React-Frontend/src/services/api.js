@@ -1,80 +1,135 @@
 const Base_URL = "http://127.0.0.1:8000";
 
-// export const getNote = async (noteId) => {
-//   const res = await fetch(`${Base_URL}/notes/${noteId}`, {
-//     Authorization: `Bearer ${localStorage.getItem("token")}`,
-//   });
-//   return res.json();
-// };
+// Helper function to get token
+const getToken = () => localStorage.getItem("token");
 
 // User APIs
 export const getUser = async () => {
-  const res = await fetch(`${Base_URL}/users/me`, {
-    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-  });
-  return res.json();
+  const token = getToken();
+  if (!token) {
+    throw new Error("No authentication token found");
+  }
+  try {
+    const res = await fetch(`${Base_URL}/users/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+    return res.json();
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    throw error;
+  }
 };
 
 // Notes APIs
-
 export const getNotes = async () => {
-  const res = await fetch(`${Base_URL}/notes`, {
-    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-  });
-  return res.json();
+  const token = getToken();
+  if (!token) {
+    throw new Error("No authentication token found");
+  }
+  try {
+    const res = await fetch(`${Base_URL}/notes`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+    return res.json();
+  } catch (error) {
+    console.error("Error fetching notes:", error);
+    throw error;
+  }
 };
 
 export const addNote = async (note) => {
-  const res = await fetch(`${Base_URL}/notes`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-    body: JSON.stringify(note),
-  });
-
-  return res.json();
+  const token = getToken();
+  if (!token) {
+    throw new Error("No authentication token found");
+  }
+  try {
+    const res = await fetch(`${Base_URL}/notes`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(note),
+    });
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+    return res.json();
+  } catch (error) {
+    console.error("Error adding note:", error);
+    throw error;
+  }
 };
 
 export const updateNote = async (noteId, updatedNote) => {
-  const res = await fetch(`${Base_URL}/notes/${noteId}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-    body: JSON.stringify(updatedNote),
-  });
-
-  return res.json();
+  const token = getToken();
+  if (!token) {
+    throw new Error("No authentication token found");
+  }
+  try {
+    const res = await fetch(`${Base_URL}/notes/${noteId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(updatedNote),
+    });
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+    return res.json();
+  } catch (error) {
+    console.error("Error updating note:", error);
+    throw error;
+  }
 };
 
 export const deleteNote = async (note_id) => {
-  const res = await fetch(`${Base_URL}/notes/${note_id}`, {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
-  return res.json();
+  const token = getToken();
+  if (!token) {
+    throw new Error("No authentication token found");
+  }
+  try {
+    const res = await fetch(`${Base_URL}/notes/${note_id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+    return res.json();
+  } catch (error) {
+    console.error("Error deleting note:", error);
+    throw error;
+  }
 };
 
 // ChatBot APIs
-
 export const getAllChats = async () => {
+  const token = getToken();
+  if (!token) {
+    throw new Error("No authentication token found");
+  }
   try {
     const res = await fetch(`${Base_URL}/chats`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     if (!res.ok) {
       throw new Error(`HTTP error! Status: ${res.status}`);
     }
     const data = await res.json();
-    console.log("API response:", data);
     return data.chats || [];
   } catch (error) {
     console.error("Error fetching chats:", error);
@@ -83,23 +138,77 @@ export const getAllChats = async () => {
 };
 
 export const getChatResponse = async (chatInput) => {
-  const res = await fetch(`${Base_URL}/chats`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-    body: JSON.stringify(chatInput),
-  });
-
-  return res.json();
+  const token = getToken();
+  if (!token) {
+    throw new Error("No authentication token found");
+  }
+  try {
+    const res = await fetch(`${Base_URL}/chats`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(chatInput),
+    });
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+    return res.json();
+  } catch (error) {
+    console.error("Error getting chat response:", error);
+    throw error;
+  }
 };
 
 export const resetChats = async () => {
-  await fetch(`${Base_URL}/chats/reset`, {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
+  const token = getToken();
+  if (!token) {
+    throw new Error("No authentication token found");
+  }
+  try {
+    const res = await fetch(`${Base_URL}/chats/reset`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+    return res.json();
+  } catch (error) {
+    console.error("Error resetting chats:", error);
+    throw error;
+  }
+};
+
+// Additional User Authentication APIs
+
+export const logout = () => {
+  localStorage.removeItem("token");
+};
+
+export const updateUsername = async (newUsername) => {
+  const token = getToken();
+  if (!token) {
+    throw new Error("No authentication token found");
+  }
+  try {
+    const res = await fetch(`${Base_URL}/users/me`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ username: newUsername }),
+    });
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+    return res.json();
+  } catch (error) {
+    console.error("Error updating username:", error);
+    throw error;
+  }
 };

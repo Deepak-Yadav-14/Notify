@@ -18,10 +18,14 @@ const NotesCardContainer = ({
   };
 
   const deleteNoteCard = async (note_id) => {
-    await deleteNote(note_id);
-    setNotes(notes.filter((note) => note.id != note_id));
-    if (activeNote && activeNote.id == note_id) {
-      setActiveNote(null);
+    try {
+      await deleteNote(note_id);
+      setNotes(notes.filter((note) => note.id !== note_id));
+      if (activeNote && activeNote.id === note_id) {
+        setActiveNote(null);
+      }
+    } catch (error) {
+      console.error("Failed to delete note:", error);
     }
   };
 

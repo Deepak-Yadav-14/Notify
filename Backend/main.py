@@ -29,6 +29,9 @@ class NoteModel(BaseModel):
 class User_Input(BaseModel):
   chat_input: str
 
+class UserName(BaseModel):
+  username: str
+
 
 
 # User Endpoint
@@ -97,5 +100,9 @@ async def login(form_data : OAuth2PasswordRequestForm = Depends()):
     )
   access_token = create_access_token({"sub": user["email"]})
   return {"access_token": access_token, "token_type": "bearer"}
+
+@app.put("/users/me")
+async def rename_user(username: UserName, curr_user: Annotated[dict, Depends(get_curr_user)]):
+  return await update_username(username.username, curr_user["email"])
 
 
