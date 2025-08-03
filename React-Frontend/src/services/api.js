@@ -7,6 +7,14 @@ const Base_URL = "http://127.0.0.1:8000";
 //   return res.json();
 // };
 
+// User APIs
+export const getUser = async () => {
+  const res = await fetch(`${Base_URL}/users/me`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  });
+  return res.json();
+};
+
 // Notes APIs
 
 export const getNotes = async () => {
@@ -26,7 +34,7 @@ export const addNote = async (note) => {
     body: JSON.stringify(note),
   });
 
-  return;
+  return res.json();
 };
 
 export const updateNote = async (noteId, updatedNote) => {

@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
-import { Plus, Edit2, Save } from "lucide-react";
+import { Plus, Edit2, Save, FileText } from "lucide-react";
 import NotesContainer from "./NotesContainer";
 import { addNote, getAllChats, getNotes, updateNote } from "../services/api";
 import ChatBotContainer from "./ChatBotContainer";
 
-const MainContainer = ({ showNotesContainer, showChatBotContainer }) => {
+const MainContainer = ({
+  showNotesContainer,
+  showChatBotContainer,
+  notesCollapsed,
+  chatCollapsed,
+  onNotesToggle,
+  onChatToggle,
+}) => {
   const [chatInput, setChatInput] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -119,68 +126,81 @@ const MainContainer = ({ showNotesContainer, showChatBotContainer }) => {
           setNoteTitle={setNoteTitle}
           setEditMode={setEditMode}
           createNewNote={createNewNote}
-          Plus={Plus}
+          isCollapsed={notesCollapsed}
+          onToggle={onNotesToggle}
         />
       )}
 
-      <div className="flex-1 flex flex-col bg-gray-900">
+      <div className="flex-1 flex flex-col bg-gradient-to-br from-gray-900 via-slate-900 to-gray-950 min-w-0">
         {activeNote ? (
           <>
-            <div className="p-4 border-b border-gray-700 flex justify-between items-center bg-gray-800">
+            <div className="p-4 border-b border-slate-700/50 flex justify-between items-center bg-gray-800/20 backdrop-blur-xl">
               {editMode ? (
                 <input
                   type="text"
                   value={noteTitle}
-                  placeholder="New Note"
+                  placeholder="Enter note title..."
                   onChange={(e) => setNoteTitle(e.target.value)}
-                  className="text-white flex-1 bg-gray-700  p-2 rounded"
+                  className="text-gray-100 flex-1 bg-gray-700/50 border border-gray-600/50 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-300 text-lg font-semibold"
                 />
               ) : (
-                <h1 className="text-white text-xl font-semibold">
+                <h1 className="text-gray-100 text-xl font-bold truncate">
                   {activeNote.title}
                 </h1>
               )}
-              <div className="flex space-x-2">
+              <div className="flex space-x-2 ml-4 flex-shrink-0">
                 {editMode ? (
                   <button
                     onClick={saveNote}
-                    className="bg-green-600 hover:bg-green-700 rounded text-white p-2.5 ml-2">
-                    <Save size={20} />
+                    className="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 rounded-lg text-white p-2.5 transition-all duration-300 shadow-lg hover:shadow-emerald-900/20">
+                    <Save size={18} />
                   </button>
                 ) : (
                   <button
                     onClick={() => setEditMode(true)}
-                    className="bg-blue-600 hover:bg-blue-700 rounded p-2.5 text-white ml-2">
-                    <Edit2 size={20} />
+                    className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 rounded-lg p-2.5 text-white transition-all duration-300 shadow-lg hover:shadow-blue-900/20">
+                    <Edit2 size={18} />
                   </button>
                 )}
               </div>
             </div>
-            <div className="flex-1 p-4 overflow-y-auto">
+            <div className="flex-1 p-4 overflow-hidden">
               {editMode ? (
                 <textarea
                   value={activeNote.content}
                   onChange={(e) => updateNoteContent(e.target.value)}
-                  className="text-white h-full w-full bg-gray-800 resize-none p-4 rounded"
+                  placeholder="Start writing your note..."
+                  className="text-gray-100 h-full w-full bg-gray-800/20 backdrop-blur-xl border border-gray-600/30 resize-none p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-300 leading-relaxed scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent"
                 />
               ) : (
-                <div className="whitespace-pre-wrap text-white bg-gray-800 p-4 rounded h-full overflow-y-auto">
-                  {activeNote.content}
+                <div className="whitespace-pre-wrap text-gray-100 bg-gray-800/20 backdrop-blur-xl border border-gray-600/30 p-4 rounded-lg h-full overflow-y-auto leading-relaxed scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
+                  {activeNote.content || (
+                    <span className="text-gray-500 italic">
+                      This note is empty. Click edit to add content.
+                    </span>
+                  )}
                 </div>
               )}
             </div>
           </>
         ) : (
-          <div className="flex-1 flex justify-center items-center">
-            <div className="text-center">
-              <p className="text-gray-500 mb-4">
-                Select a Note or create a new one
+          <div className="flex-1 flex justify-center items-center p-8">
+            <div className="text-center max-w-md">
+              <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-teal-600 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-2xl">
+                <FileText className="w-10 h-10 text-white" />
+              </div>
+              <h2 className="text-gray-200 text-xl font-semibold mb-3">
+                No Note Selected
+              </h2>
+              <p className="text-gray-500 mb-6 leading-relaxed">
+                Select a note from the sidebar or create a new one to get
+                started with your note-taking journey.
               </p>
               <button
                 onClick={createNewNote}
-                className="bg-green-600 text-white py-2 px-4 rounded flex items-center mx-auto ">
-                <Plus size={16} className="mr-2" />
-                New Note
+                className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-500 hover:to-blue-500 text-white py-3 px-6 rounded-lg flex items-center mx-auto space-x-2 transition-all duration-300 shadow-lg hover:shadow-emerald-900/20 font-medium">
+                <Plus size={18} />
+                <span>Create New Note</span>
               </button>
             </div>
           </div>
@@ -195,6 +215,8 @@ const MainContainer = ({ showNotesContainer, showChatBotContainer }) => {
           setChatMessages={setChatMessages}
           loading={loading}
           setLoading={setLoading}
+          isCollapsed={chatCollapsed}
+          onToggle={onChatToggle}
         />
       )}
     </div>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Eye, EyeOff, Mail, Lock, ArrowRight } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const LoginPage = () => {
   const [form, setForm] = useState({ username: "", password: "" });
@@ -40,6 +40,8 @@ const LoginPage = () => {
       const data = await res.json();
       if (res.ok) {
         setToken(data.access_token);
+        localStorage.setItem("username", data.username);
+        localStorage.setItem("email", data.email);
         navigate("/dashboard");
       } else {
         setError(data.detail || "Login failed. Please try again.");
@@ -151,11 +153,11 @@ const LoginPage = () => {
             </a>
             <div className="text-white/50 text-sm">
               Don't have an account?{" "}
-              <a
-                href="#"
+              <Link
+                to="/"
                 className="text-purple-400 hover:text-purple-300 transition-colors font-medium">
                 Sign up
-              </a>
+              </Link>
             </div>
           </div>
         </div>

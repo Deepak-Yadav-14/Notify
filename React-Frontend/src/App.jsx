@@ -9,8 +9,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<LoginPage />} />
+        <Route index element={<RegisterPage />} />
         <Route path="/dashboard" element={<NotesApp />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
       {/* <NotesApp /> */}
     </BrowserRouter>

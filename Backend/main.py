@@ -2,7 +2,7 @@ from fastapi import Depends, FastAPI, HTTPException,status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from auth import *
-from schemas import Token, UserCreate
+from schemas import Token, User, UserCreate
 from typing import Annotated
 import notes
 import chat
@@ -29,6 +29,14 @@ class NoteModel(BaseModel):
 class User_Input(BaseModel):
   chat_input: str
 
+
+
+# User Endpoint
+@app.get("/users/me", response_model=User)
+async def read_users_me(curr_user: Annotated[dict, Depends(get_curr_user)]):
+  return {"email": curr_user["email"], "username": curr_user["username"]}
+
+
 # Notes endpoints
 
 @app.get("/notes/{note_id}")
@@ -42,7 +50,7 @@ async def get_notes(curr_user: Annotated[dict, Depends(get_curr_user)]):
 
 @app.post("/notes")
 async def create_note(note: NoteModel, curr_user: Annotated[dict, Depends(get_curr_user)]):
-  return  await notes.add_note(note.model_dump(), curr_user)
+  return await notes.add_note(note.model_dump(), curr_user)
 
 @app.put("/notes/{note_id}")
 async def update_note(note_id:str , updated_note: NoteModel ,curr_user: Annotated[dict, Depends(get_curr_user)]):
