@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Settings, LogOut, Edit2, Check, X } from "lucide-react";
-import { updateUsername } from "../services/api"; // Placeholder API function
+import { updateUsername } from "../services/api";
+import { Link } from "react-router-dom";
 
 const ProfileDropdown = ({
   user,
@@ -118,10 +119,12 @@ const ProfileDropdown = ({
         </div>
       </div>
       <div className="py-2">
-        <button className="w-full px-6 py-3 text-left text-gray-300 hover:text-white hover:bg-gray-700/50 transition-all duration-200 flex items-center space-x-3">
+        <Link
+          to="/about"
+          className="w-full px-6 py-3 text-left text-gray-300 hover:text-white hover:bg-gray-700/50 transition-all duration-200 flex items-center space-x-3">
           <Settings size={16} className="text-gray-400" />
           <span>About Us</span>
-        </button>
+        </Link>
         <div className="border-t border-slate-700/50 my-2"></div>
         <button
           onClick={onLogout}

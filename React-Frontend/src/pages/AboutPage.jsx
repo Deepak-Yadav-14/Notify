@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import {
   FileText,
   ArrowLeft,
@@ -11,13 +10,15 @@ import {
   Shield,
   Rocket,
   Code,
-  MessageCircle,
   CheckCircle,
   Mail,
   Github,
-  Twitter,
   Linkedin,
+  Coffee,
+  Zap,
+  Layers,
 } from "lucide-react";
+import avatar from "../assets/ProfilePicWithOUT.png";
 
 const AboutPage = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -25,36 +26,6 @@ const AboutPage = () => {
   useEffect(() => {
     setIsLoaded(true);
   }, []);
-
-  const teamMembers = [
-    {
-      name: "Alex Chen",
-      role: "Founder & CEO",
-      image: "AC",
-      description:
-        "Passionate about AI and productivity tools. 10+ years in tech.",
-    },
-    {
-      name: "Sarah Kim",
-      role: "Lead Developer",
-      image: "SK",
-      description:
-        "Full-stack developer with expertise in React and AI integration.",
-    },
-    {
-      name: "Marcus Rivera",
-      role: "AI Specialist",
-      image: "MR",
-      description:
-        "PhD in Machine Learning, focused on natural language processing.",
-    },
-    {
-      name: "Elena Torres",
-      role: "UX Designer",
-      image: "ET",
-      description: "Creating beautiful, intuitive interfaces that users love.",
-    },
-  ];
 
   const values = [
     {
@@ -83,33 +54,6 @@ const AboutPage = () => {
     },
   ];
 
-  const milestones = [
-    {
-      year: "2023",
-      title: "The Beginning",
-      description:
-        "Started as a side project to solve personal note-taking challenges.",
-    },
-    {
-      year: "2024",
-      title: "AI Integration",
-      description:
-        "Launched our first AI-powered chat feature for note interaction.",
-    },
-    {
-      year: "2024",
-      title: "Public Launch",
-      description:
-        "Released Talk with Notes to the public with positive user feedback.",
-    },
-    {
-      year: "2025",
-      title: "What's Next",
-      description:
-        "Expanding features and building collaboration tools for teams.",
-    },
-  ];
-
   if (!isLoaded) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-gray-950 flex items-center justify-center">
@@ -129,28 +73,28 @@ const AboutPage = () => {
 
       {/* Navigation */}
       <nav className="relative z-10 flex justify-between items-center p-6 lg:px-12 border-b border-gray-800/50">
-        <Link to="/" className="flex items-center space-x-3 group">
+        <a href="/" className="flex items-center space-x-3 group">
           <ArrowLeft className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-teal-600 rounded-lg flex items-center justify-center shadow-lg">
               <FileText className="w-5 h-5 text-white" />
             </div>
             <span className="font-bold text-lg bg-gradient-to-r from-blue-400 to-teal-400 bg-clip-text text-transparent">
-              Talk with Notes
+              Notify
             </span>
           </div>
-        </Link>
+        </a>
         <div className="flex items-center space-x-4">
-          <Link
-            to="/login"
+          <a
+            href="/login"
             className="text-gray-300 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-gray-800/50">
             Sign In
-          </Link>
-          <Link
-            to="/register"
+          </a>
+          <a
+            href="/register"
             className="bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-500 hover:to-teal-500 text-white px-6 py-2 rounded-lg transition-all duration-300 shadow-lg">
             Get Started
-          </Link>
+          </a>
         </div>
       </nav>
 
@@ -189,8 +133,8 @@ const AboutPage = () => {
               <p className="text-gray-300 text-lg leading-relaxed mb-6">
                 In today's information-rich world, we believe that managing and
                 accessing knowledge shouldn't be a barrier to productivity.
-                That's why we created Talk with Notes – to bridge the gap
-                between information storage and intelligent interaction.
+                That's why we created Notify – to bridge the gap between
+                information storage and intelligent interaction.
               </p>
               <p className="text-gray-300 text-lg leading-relaxed">
                 Our platform combines the simplicity of traditional note-taking
@@ -280,75 +224,129 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Team Section */}
+      {/* Meet the Developer - New Design */}
       <section className="relative z-10 px-6 lg:px-12 py-16">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white mb-4">
-              Meet Our Team
-            </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Passionate individuals working together to transform how you
-              interact with information.
-            </p>
-          </div>
+        <div className="max-w-5xl mx-auto">
+          <div className="bg-gradient-to-br from-slate-800/50 via-gray-800/40 to-slate-900/50 backdrop-blur-xl border border-gray-700/50 rounded-3xl p-12 relative overflow-hidden">
+            {/* Background decoration */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/20 to-teal-500/20 rounded-full blur-2xl"></div>
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-purple-500/20 to-pink-500/20 rounded-full blur-2xl"></div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {teamMembers.map((member, index) => (
-              <div
-                key={index}
-                className="bg-gray-800/40 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-6 text-center hover:bg-gray-800/60 transition-all duration-300 group">
-                <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-teal-600 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-xl font-bold shadow-lg">
-                  {member.image}
-                </div>
-                <h3 className="text-xl font-semibold text-white mb-2">
-                  {member.name}
-                </h3>
-                <p className="text-blue-400 text-sm font-medium mb-3">
-                  {member.role}
-                </p>
-                <p className="text-gray-400 text-sm leading-relaxed">
-                  {member.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Timeline Section */}
-      <section className="relative z-10 px-6 lg:px-12 py-16">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white mb-4">Our Journey</h2>
-            <p className="text-xl text-gray-400">
-              From a simple idea to a powerful AI-enhanced platform.
-            </p>
-          </div>
-
-          <div className="space-y-8">
-            {milestones.map((milestone, index) => (
-              <div key={index} className="flex items-start space-x-6">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-teal-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg">
-                    {index + 1}
-                  </div>
-                </div>
-                <div className="bg-gray-800/40 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-6 flex-1">
-                  <div className="flex items-center space-x-3 mb-3">
-                    <span className="bg-blue-900/50 text-blue-300 px-3 py-1 rounded-full text-sm font-medium">
-                      {milestone.year}
+            <div className="relative z-10">
+              <div className="grid lg:grid-cols-2 gap-2 items-center">
+                {/* Left side - Content */}
+                <div>
+                  <div className="inline-flex items-center space-x-2 bg-purple-900/30 border border-purple-700/50 rounded-full px-4 py-2 mb-6 backdrop-blur-sm">
+                    <Brain className="w-4 h-4 text-purple-400" />
+                    <span className="text-purple-300 text-sm font-medium">
+                      Solo Creator
                     </span>
-                    <h3 className="text-xl font-semibold text-white">
-                      {milestone.title}
-                    </h3>
                   </div>
-                  <p className="text-gray-300 leading-relaxed">
-                    {milestone.description}
-                  </p>
+
+                  <h2 className="text-4xl font-bold text-white mb-6">
+                    Built by
+                    <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                      {" "}
+                      Master Of None
+                    </span>
+                  </h2>
+                  <div className="italic text-lg text-gray-400 border-l-2 border-purple-500/50 pl-4">
+                    "Jack of all trades, master of none, though oftentimes
+                    better than master of one."
+                    <div className="text-sm text-gray-500 mt-2">
+                      — William Shakespeare
+                    </div>
+                  </div>
+
+                  {/* <p className="text-gray-300 text-lg leading-relaxed mb-6">
+                    This entire platform is crafted by someone who believes in
+                    the power of curiosity and continuous learning. Every line
+                    of code, every design decision, and every feature comes from
+                    a passion for building things that matter.
+                  </p> */}
+
+                  {/* <div className="space-y-4 mb-8">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                      <span className="text-gray-400">
+                        Full-stack development from frontend to AI integration
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-teal-400 rounded-full"></div>
+                      <span className="text-gray-400">
+                        Design thinking meets technical execution
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                      <span className="text-gray-400">
+                        Always learning, always building, always improving
+                      </span>
+                    </div>
+                  </div> */}
+                </div>
+
+                {/* Right side - Visual */}
+                <div className="flex justify-center lg:justify-end">
+                  <div className="relative">
+                    {/* Main avatar */}
+                    <div className="w-48 h-48 bg-gradient-to-br from-blue-800 via-purple-800 to-pink-800 rounded-3xl flex items-center justify-center text-white text-4xl font-bold shadow-2xl relative z-10">
+                      <div className="relative w-48 h-48">
+                        <img
+                          alt="avatar"
+                          src={avatar}
+                          className="w-full h-full object-cover rounded-3xl"
+                        />
+                        <h1 className="text-shadow-gray-950 font-bold font-sans text-xl text-center absolute  left-1/2 top-37 transform -translate-x-1/2 -translate-y-1/2">
+                          MASTER OF NONE
+                        </h1>
+                      </div>
+                    </div>
+
+                    {/* Floating skill badges */}
+                    <div className="absolute -top-4 -right-4 bg-blue-500/20 backdrop-blur-sm border border-blue-400/30 rounded-xl p-3 animate-pulse">
+                      <Code className="w-6 h-6 text-blue-400" />
+                    </div>
+
+                    <div className="absolute -bottom-4 -left-4 bg-teal-500/20 backdrop-blur-sm border border-teal-400/30 rounded-xl p-3 animate-pulse delay-500">
+                      <Layers className="w-6 h-6 text-teal-400" />
+                    </div>
+
+                    <div className="absolute top-1/2 -left-8 bg-purple-500/20 backdrop-blur-sm border border-purple-400/30 rounded-xl p-3 animate-pulse delay-1000">
+                      <Zap className="w-6 h-6 text-purple-400" />
+                    </div>
+
+                    <div className="absolute top-1/2 -right-8 bg-pink-500/20 backdrop-blur-sm border border-pink-400/30 rounded-xl p-3 animate-pulse delay-700">
+                      <Coffee className="w-6 h-6 text-pink-400" />
+                    </div>
+
+                    {/* Glow effect */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 rounded-3xl blur-xl -z-10"></div>
+                  </div>
                 </div>
               </div>
-            ))}
+
+              {/* Bottom stats */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12 pt-8 border-t border-gray-700/50">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-white mb-1">∞</div>
+                  <div className="text-sm text-gray-400">Lines of Code</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-white mb-1">24/7</div>
+                  <div className="text-sm text-gray-400">Curiosity Mode</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-white mb-1">∞</div>
+                  <div className="text-sm text-gray-400">Coffee Consumed</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-white mb-1">1</div>
+                  <div className="text-sm text-gray-400">Human, Many Hats</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -409,43 +407,55 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Statistics Section */}
       <section className="relative z-10 px-6 lg:px-12 py-16">
         <div className="max-w-6xl mx-auto">
           <div className="bg-gradient-to-r from-blue-900/40 to-teal-900/40 backdrop-blur-xl border border-blue-700/50 rounded-3xl p-12">
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold text-white mb-4">
-                By the Numbers
+                Get Started in Minutes
               </h2>
               <p className="text-xl text-gray-300">
-                Our growing community and the impact we're making together.
+                Jump right in and start experiencing the power of AI-assisted
+                productivity.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-4 gap-8 text-center">
-              <div>
-                <div className="text-4xl font-bold text-blue-400 mb-2">
-                  10K+
+            <div className="grid md:grid-cols-4 gap-8">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl font-bold text-blue-400">1</span>
                 </div>
-                <div className="text-gray-300">Active Users</div>
+                <h3 className="text-xl font-semibold text-white mb-2">
+                  Sign Up
+                </h3>
+                <p className="text-gray-300">Create your account in seconds</p>
               </div>
-              <div>
-                <div className="text-4xl font-bold text-teal-400 mb-2">
-                  500K+
+              <div className="text-center">
+                <div className="w-16 h-16 bg-teal-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl font-bold text-teal-400">2</span>
                 </div>
-                <div className="text-gray-300">Notes Created</div>
+                <h3 className="text-xl font-semibold text-white mb-2">
+                  Create
+                </h3>
+                <p className="text-gray-300">
+                  Start your first note or conversation
+                </p>
               </div>
-              <div>
-                <div className="text-4xl font-bold text-emerald-400 mb-2">
-                  1M+
+              <div className="text-center">
+                <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl font-bold text-emerald-400">3</span>
                 </div>
-                <div className="text-gray-300">AI Conversations</div>
+                <h3 className="text-xl font-semibold text-white mb-2">
+                  Explore
+                </h3>
+                <p className="text-gray-300">Discover AI-powered features</p>
               </div>
-              <div>
-                <div className="text-4xl font-bold text-purple-400 mb-2">
-                  99.9%
+              <div className="text-center">
+                <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl font-bold text-purple-400">4</span>
                 </div>
-                <div className="text-gray-300">Uptime</div>
+                <h3 className="text-xl font-semibold text-white mb-2">Excel</h3>
+                <p className="text-gray-300">Boost your productivity daily</p>
               </div>
             </div>
           </div>
@@ -470,12 +480,6 @@ const AboutPage = () => {
                 <span>hello@talkwithnotes.com</span>
               </a>
               <div className="flex items-center space-x-4">
-                <a
-                  href="#"
-                  className="w-10 h-10 bg-gray-700/50 hover:bg-gray-600/50 rounded-lg flex items-center justify-center text-gray-400 hover:text-white transition-all duration-300"
-                  aria-label="Twitter">
-                  <Twitter className="w-5 h-5" />
-                </a>
                 <a
                   href="#"
                   className="w-10 h-10 bg-gray-700/50 hover:bg-gray-600/50 rounded-lg flex items-center justify-center text-gray-400 hover:text-white transition-all duration-300"
@@ -507,21 +511,19 @@ const AboutPage = () => {
               <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-teal-600 rounded-lg flex items-center justify-center">
                 <FileText className="w-5 h-5 text-white" />
               </div>
-              <span className="font-bold text-lg text-white">
-                Talk with Notes
-              </span>
+              <span className="font-bold text-lg text-white">Notify</span>
             </div>
             <div className="flex items-center space-x-6 text-gray-400">
-              <Link to="/" className="hover:text-white transition-colors">
+              <a href="/" className="hover:text-white transition-colors">
                 Home
-              </Link>
-              <Link to="/login" className="hover:text-white transition-colors">
+              </a>
+              <a href="/login" className="hover:text-white transition-colors">
                 Privacy
-              </Link>
-              <Link to="/login" className="hover:text-white transition-colors">
+              </a>
+              <a href="/login" className="hover:text-white transition-colors">
                 Terms
-              </Link>
-              <span className="text-sm">© 2024 Talk with Notes</span>
+              </a>
+              <span className="text-sm">© 2025 Notify</span>
             </div>
           </div>
         </div>

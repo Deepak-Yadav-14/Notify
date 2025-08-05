@@ -15,6 +15,7 @@ function App() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/dashboard" element={<NotesApp />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="*" element={<HomePage />} />
       </Routes>
     </BrowserRouter>
   );

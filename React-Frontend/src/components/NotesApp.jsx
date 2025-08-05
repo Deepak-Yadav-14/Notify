@@ -89,12 +89,14 @@ const NotesApp = () => {
   return (
     <div className="flex flex-col h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-gray-950">
       <div className="flex justify-between items-center bg-gray-800/30 backdrop-blur-xl p-4 border-b border-slate-700/50 shadow-2xl z-[100]">
-        <div className="flex items-center space-x-3">
+        <div
+          onClick={() => navigate("/")}
+          className="flex items-center space-x-3">
           <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-teal-600 rounded-xl flex items-center justify-center shadow-lg">
             <FileText className="w-6 h-6 text-white" />
           </div>
           <h1 className="font-bold text-xl bg-gradient-to-r from-blue-400 to-teal-400 bg-clip-text text-transparent">
-            Talk with Notes
+            Notify
           </h1>
         </div>
         <div className="flex space-x-3">
