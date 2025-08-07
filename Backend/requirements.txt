@@ -1,0 +1,29 @@
+# FastAPI (high-performance API framework)
+fastapi==0.116.1  # :contentReference[oaicite:0]{index=0}
+
+# Uvicorn ASGI server with standard extras
+uvicorn[standard]==0.35.0  # :contentReference[oaicite:1]{index=1}
+
+# Google GenAI SDK for Gemini API
+google-genai==1.29.0  # :contentReference[oaicite:2]{index=2}
+
+# JOSE implementation for JWT (with cryptography backend)
+python-jose==3.5.0  # :contentReference[oaicite:3]{index=3}
+
+# Async MongoDB driver (Motor)
+motor==3.7.1  # :contentReference[oaicite:4]{index=4}
+
+# Password hashing library (with bcrypt support)
+passlib[bcrypt]==1.7.4  # :contentReference[oaicite:5]{index=5}
+
+# bcrypt hashing algorithm
+bcrypt==4.3.0  # :contentReference[oaicite:6]{index=6}
+
+# Load environment variables from .env file
+python-dotenv==1.1.1  # :contentReference[oaicite:7]{index=7}
+
+# Data validation with Pydantic
+pydantic==2.11.7  # :contentReference[oaicite:8]{index=8}
+
+# PyMongo driver for BSON support
+pymongo==4.13.2  # :contentReference[oaicite:9]{index=9}

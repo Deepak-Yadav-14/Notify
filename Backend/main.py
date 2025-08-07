@@ -6,18 +6,21 @@ from schemas import Token, User, UserCreate
 from typing import Annotated
 import notes
 import chat
-
+from dotenv import load_dotenv
+import os
 
 from fastapi.security import OAuth2PasswordRequestForm
 
 app = FastAPI()
 
+load_dotenv()
 
+origins = os.getenv("CORS_ORIGINS", "").split(",")
 app.add_middleware(
   CORSMiddleware,
-  allow_origins = ["*"],
+  allow_origins = origins,
   allow_credentials = True,
-  allow_methods = ["*"],
+  allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allow_headers = ["*"]
 )
 

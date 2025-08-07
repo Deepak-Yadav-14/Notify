@@ -125,7 +125,7 @@ const LoginPage = () => {
               disabled={isLoading}
               className="w-full bg-gradient-to-r from-blue-700 to-teal-700 hover:from-blue-600 hover:to-teal-600 text-gray-100 font-semibold py-4 px-6 rounded-2xl shadow-lg hover:shadow-blue-900/30 transition-all duration-300 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed group">
               {isLoading ? (
-                <div className="w-6 h-6 border-2 border-gray-400/30 border-t-gray-100 rounded-full animate or-spin"></div>
+                <div className="w-6 h-6 border-2 border-gray-400/30 border-t-gray-100 rounded-full animate-spin"></div>
               ) : (
                 <>
                   <span>Sign In</span>
