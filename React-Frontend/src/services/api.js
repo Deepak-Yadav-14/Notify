@@ -1,4 +1,4 @@
-const Base_URL = "http://127.0.0.1:8000";
+const Base_URL = "https://notify-6xn0.onrender.com";
 
 // Helper function to get token
 const getToken = () => localStorage.getItem("token");

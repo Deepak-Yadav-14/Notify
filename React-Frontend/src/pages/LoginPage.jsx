@@ -26,7 +26,7 @@ const LoginPage = () => {
     setIsLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8000/login", {
+      const res = await fetch("https://notify-6xn0.onrender.com/login", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({
