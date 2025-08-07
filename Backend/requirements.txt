@@ -27,3 +27,5 @@ pydantic==2.11.7  # :contentReference[oaicite:8]{index=8}
 
 # PyMongo driver for BSON support
 pymongo==4.13.2  # :contentReference[oaicite:9]{index=9}
+
+email-validator
