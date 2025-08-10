@@ -102,7 +102,7 @@ const NotesApp = () => {
         <div className="flex space-x-3">
           <button
             onClick={toggleNotesContainer}
-            className={`px-4 py-2 rounded-lg text-white font-medium transition-all duration-300 flex items-center space-x-2 ${
+            className={`sm:px-4 sm:py-2 px-2 py-1 rounded-lg text-white sm:font-medium font-small transition-all duration-300 flex items-center space-x-2 ${
               !notesCollapsed
                 ? "bg-gradient-to-r from-blue-600 to-blue-700 shadow-lg shadow-blue-900/30"
                 : "bg-gray-700/50 hover:bg-gray-600/50"
@@ -112,7 +112,7 @@ const NotesApp = () => {
           </button>
           <button
             onClick={toggleChatBotContainer}
-            className={`px-4 py-2 rounded-lg text-white font-medium transition-all duration-300 flex items-center space-x-2 ${
+            className={`sm:px-4 sm:py-2 px-2 py-1 rounded-lg text-white sm:font-medium font-small transition-all duration-300 flex items-center space-x-2 ${
               !chatCollapsed
                 ? "bg-gradient-to-r from-teal-600 to-teal-700 shadow-lg shadow-teal-900/30"
                 : "bg-gray-700/50 hover:bg-gray-600/50"
