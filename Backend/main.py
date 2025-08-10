@@ -1,4 +1,5 @@
 from fastapi import Depends, FastAPI, HTTPException,status
+from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from auth import *
@@ -8,6 +9,7 @@ import notes
 import chat
 from dotenv import load_dotenv
 import os
+from database import init_db
 
 from fastapi.security import OAuth2PasswordRequestForm
 
@@ -23,6 +25,12 @@ app.add_middleware(
   allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allow_headers = ["*"]
 )
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
+    await init_db()  # Ensure indexes are created on app startup
+    yield
 
 class NoteModel(BaseModel):
   title: str
