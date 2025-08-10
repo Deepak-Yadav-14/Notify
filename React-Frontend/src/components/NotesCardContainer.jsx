@@ -18,14 +18,17 @@ const NotesCardContainer = ({
   };
 
   const deleteNoteCard = async (note_id) => {
+    const deletedNote = notes.find((note) => note.id === note_id);
+    setNotes(notes.filter((note) => note.id !== note_id)); // Remove immediately
+    if (activeNote?.id === note_id) setActiveNote(null);
     try {
+      console.time("deleteNote");
       await deleteNote(note_id);
-      setNotes(notes.filter((note) => note.id !== note_id));
-      if (activeNote && activeNote.id === note_id) {
-        setActiveNote(null);
-      }
+      console.timeEnd("deleteNote");
     } catch (error) {
       console.error("Failed to delete note:", error);
+      setNotes([...notes, deletedNote]); // Rollback
+      setError("Failed to delete note");
     }
   };
 

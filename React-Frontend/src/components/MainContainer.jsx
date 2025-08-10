@@ -92,20 +92,28 @@ const MainContainer = ({
       title: noteTitle || "New Note",
       content: activeNote.content,
     };
+    setNotes(
+      notes.map((note) => (note.id === activeNote.id ? updatedNote : note))
+    ); // Update UI
+    setActiveNote(updatedNote);
+    setEditMode(false);
     try {
+      console.time("updateNote");
       const savedNote = await updateNote(activeNote.id, updatedNote);
+      console.timeEnd("updateNote");
       if (savedNote && "id" in savedNote) {
         setNotes(
           notes.map((note) => (note.id === activeNote.id ? savedNote : note))
         );
         setActiveNote(savedNote);
-        setEditMode(false);
-        setError(null);
       } else {
-        setError("Failed to update note: Invalid response from server");
+        throw new Error("Invalid response");
       }
     } catch (error) {
       console.error("Failed to update note:", error);
+      setNotes(
+        notes.map((note) => (note.id === activeNote.id ? activeNote : note))
+      ); // Rollback
       setError("Failed to update note");
     }
   };
@@ -116,19 +124,28 @@ const MainContainer = ({
   };
 
   const createNewNote = async () => {
-    const newNote = { title: "New Note", content: "" };
+    const tempId = `temp-${Date.now()}`;
+    const tempNote = { id: tempId, title: "New Note", content: "" };
+
+    setNotes((prev) => [...prev, tempNote]);
+    openNote(tempNote);
+    setEditMode(true);
+    setError(null);
+
     try {
-      const savedNote = await addNote(newNote);
+      const savedNote = await addNote({ title: "New Note", content: "" });
+
       if (savedNote && "id" in savedNote) {
-        setNotes([...notes, savedNote]);
-        openNote(savedNote);
-        setEditMode(true);
-        setError(null);
+        setNotes((prev) =>
+          prev.map((note) => (note.id === tempId ? savedNote : note))
+        );
+        setActiveNote(savedNote);
       } else {
-        setError("Failed to create note: Invalid response from server");
+        throw new Error("Invalid server response");
       }
     } catch (error) {
-      console.error("Failed to add note:", error);
+      console.error("Failed to create note:", error);
+      setNotes((prev) => prev.filter((note) => note.id !== tempId));
       setError("Failed to create note");
     }
   };
