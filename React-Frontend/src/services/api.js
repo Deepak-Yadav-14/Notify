@@ -1,4 +1,4 @@
-const Base_URL = "https://notify-6xn0.onrender.com";
+const Base_URL = "https://notifymon.vercel.app";
 
 // Helper function to get token
 const getToken = () => localStorage.getItem("token");
