@@ -31,6 +31,7 @@ export const getNotes = async () => {
   }
   try {
     const res = await fetch(`${Base_URL}/notes`, {
+      method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) {
