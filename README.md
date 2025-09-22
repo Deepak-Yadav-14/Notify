@@ -13,7 +13,7 @@
 
 ## 🚀 Live Demo
 
-🌐 **[View Live Application](https://your-deployed-app-url.com)** _(Update with your actual deployment URL)_
+🌐 **[View Live Application](https://notifymon.vercel.app)** _(Update with your actual deployment URL)_
 
 ## 🛠️ Tech Stack
 
