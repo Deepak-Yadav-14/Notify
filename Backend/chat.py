@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from database import notes_collection, chat_collection
 
 load_dotenv()
-client = genai.Client(api_key= os.getenv("GOOGLE_API_KEY"))
+client = genai.Client(api_key= os.getenv("GOOGLE_API_KEY"), region="asia-south1")
 
 # Create Chats
 
