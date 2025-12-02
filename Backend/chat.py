@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from database import notes_collection, chat_collection
 
 load_dotenv()
-client = genai.Client(api_key= os.getenv("GOOGLE_API_KEY"), region="asia-south1")
+client = genai.Client(api_key= os.getenv("GOOGLE_API_KEY"))
 
 # Create Chats
 
@@ -39,7 +39,7 @@ async def chat_with_notes(user_input, curr_user):
   user_chats.chats.append(user_msg) 
 
   response = client.models.generate_content(
-    model = "gemini-2.0-flash",
+    model = "gemini-1.5-flash",
     contents = user_chats.chats
   )
   # add response in the chats
