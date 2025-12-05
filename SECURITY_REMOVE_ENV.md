@@ -11,7 +11,7 @@ The `Backend/.env` file containing sensitive credentials has been committed to t
 
 ### 1. Rotate All Exposed Credentials (DO THIS FIRST!)
 - **Google API Key**: Create a new API key in Google Cloud Console and revoke the old one
-- **MongoDB Password**: Change the password for user `deepakyadav1452004` in MongoDB Atlas
+- **MongoDB Password**: Change the password for the MongoDB user in MongoDB Atlas
 - Update your production environment with new credentials
 
 ### 2. Remove .env from Git History
