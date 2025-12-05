@@ -2,8 +2,10 @@
 
 ## Problem
 The `Backend/.env` file containing sensitive credentials has been committed to the git repository history across multiple commits. This file contains:
-- Google API Key: `AIzaSyDW9HVQ5Bl_p3h3l09TAn3_5hOoE0MtkOk`
-- MongoDB URI with credentials: `mongodb+srv://deepakyadav1452004:12Ka442Ka1@cluster0.0gvnhfb.mongodb.net/notes_db`
+- Google API Key: `AIzaSy***************************` (redacted for security)
+- MongoDB URI with credentials: `mongodb+srv://username:********@cluster.mongodb.net/notes_db` (redacted for security)
+
+**⚠️ CRITICAL:** The actual credentials are exposed in git history and must be rotated immediately!
 
 ## Immediate Actions Required
 
@@ -99,9 +101,9 @@ git reset --hard origin/main  # or their branch name
 
 ## Why This Matters
 
-Even though the `.env` file was deleted in commit `3f9d8cf`, it still exists in the repository's history. Anyone with access to the repository can retrieve the sensitive credentials using:
+Even though the `.env` file was deleted in a later commit, it still exists in the repository's history. Anyone with access to the repository can retrieve the sensitive credentials using:
 ```bash
-git show 935470f7e63a61f579113137cdd025eac6dfe068:Backend/.env
+git show <commit-hash>:Backend/.env
 ```
 
 This is why history rewriting and credential rotation are both necessary.

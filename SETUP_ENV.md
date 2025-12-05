@@ -21,10 +21,10 @@
 
 ### Required Variables
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `GOOGLE_API_KEY` | Google Gemini AI API key | `AIzaSy...` |
-| `MONGO_DB_URI` | MongoDB connection string | `mongodb+srv://user:pass@cluster.mongodb.net/db` |
+| Variable         | Description                | Example                                              |
+|------------------|----------------------------|------------------------------------------------------|
+| `GOOGLE_API_KEY` | Google Gemini AI API key   | `AIzaSy...`                                          |
+| `MONGO_DB_URI`   | MongoDB connection string  | `mongodb+srv://user:pass@cluster.mongodb.net/db`     |
 
 ## Security Reminders
 
