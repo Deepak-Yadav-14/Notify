@@ -91,16 +91,24 @@ Talk_with_Notes/
    ```
 
 4. **Environment Configuration**
-   Create a `.env` file in the Backend directory:
+   
+   Copy the example environment file and configure it with your credentials:
+
+   ```bash
+   cp Backend/.env.example Backend/.env
+   ```
+   
+   Then edit `Backend/.env` with your actual credentials:
 
    ```env
-   MONGODB_URL=your_mongodb_connection_string
-   SECRET_KEY=your_jwt_secret_key
-   ALGORITHM=HS256
-   ACCESS_TOKEN_EXPIRE_MINUTES=30
-   GOOGLE_AI_API_KEY=your_gemini_api_key
-   CORS_ORIGINS=http://localhost:5173,http://localhost:3000
+   # Google API Configuration
+   GOOGLE_API_KEY=your_google_api_key_here
+
+   # MongoDB Configuration
+   MONGO_DB_URI=mongodb+srv://username:password@cluster.mongodb.net/database_name
    ```
+
+   > ⚠️ **Security Note**: Never commit the `.env` file to version control. It's already in `.gitignore` to prevent accidental commits.
 
 5. **Run the backend server**
    ```bash
@@ -167,6 +175,21 @@ Once the backend is running, visit `http://localhost:8000/docs` for interactive 
 - Build the application: `npm run build`
 - Deploy on Vercel, Netlify, or any static hosting service
 - Update API endpoints for production
+
+## 🔒 Security
+
+### Environment Variables
+
+This project uses environment variables to store sensitive configuration like API keys and database credentials. 
+
+- **Never commit** `.env` files to version control
+- Use `.env.example` as a template for required variables
+- Rotate credentials regularly, especially after any potential exposure
+- Use different credentials for development, staging, and production environments
+
+### Important Security Notice
+
+If you've accidentally committed sensitive files (like `.env`) to git history, please refer to `SECURITY_REMOVE_ENV.md` for instructions on how to remove them from the repository history and rotate compromised credentials.
 
 ## 🤝 Contributing
 
