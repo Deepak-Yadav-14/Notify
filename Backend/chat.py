@@ -39,7 +39,7 @@ async def chat_with_notes(user_input, curr_user):
   user_chats.chats.append(user_msg) 
 
   response = client.models.generate_content(
-    model = "gemini-2.0-flash",
+    model = "gemini-2.5-flash",
     contents = user_chats.chats
   )
   # add response in the chats
